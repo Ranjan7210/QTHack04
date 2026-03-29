@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Surface Code Lattice — Module 4.2 · QuantumViz</title>
+  <meta name="description" content="Interactive quantum error correction visualization: syndrome extraction, anyon braiding, and threshold error rate demonstration on the surface code lattice." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="index.css" />
+  <link rel="stylesheet" href="surface-code.css" />
+  <script>(function(){var t=localStorage.getItem('qviz-theme')||'dark';document.documentElement.setAttribute('data-theme',t);})();</script>
+</head>
+<body class="sc-body">
+
+  <!-- Navbar -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand">
+        <span class="brand-icon">⟨ψ|</span>
+        <span class="brand-text">QuantumViz</span>
+      </a>
+      <div class="nav-links">
+        <span class="nav-breadcrumb">/ Module 4.2 / Surface Code Lattice</span>
+        <a href="bloch-sphere.html" class="nav-link">Bloch Sphere</a>
+        <a href="index.html" class="nav-link">All Modules</a>
+      </div>
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">🌙</button>
+    </div>
+  </nav>
+
+  <!-- Main Layout -->
+  <div class="sc-layout">
+
+    <!-- ── Left Panel: Lattice + Controls ── -->
+    <div class="sc-main">
+
+      <!-- Header -->
+      <div class="sc-header">
+        <div class="sc-title-row">
+          <div>
+            <span class="module-badge">Module 4.2</span>
+            <h1 class="sc-title">Surface Code Lattice</h1>
+            <p class="sc-subtitle">Syndrome extraction · Anyon braiding · Threshold error rate</p>
+          </div>
+          <div class="layer-toggle-group" id="layerToggle">
+            <button class="layer-btn active" data-layer="0" title="Intuition mode">🌊 Intuition</button>
+            <button class="layer-btn" data-layer="1" title="Formalism mode">∑ Formalism</button>
+            <button class="layer-btn" data-layer="2" title="Computation mode">⌨ Computation</button>
+          </div>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="sc-tabs" id="scTabs">
+          <button class="sc-tab active" data-tab="syndrome" id="tabSyndrome">
+            <span class="tab-icon">🔍</span> Syndrome Extraction
+          </button>
+          <button class="sc-tab" data-tab="braiding" id="tabBraiding">
+            <span class="tab-icon">🌀</span> Anyon Braiding
+          </button>
+          <button class="sc-tab" data-tab="threshold" id="tabThreshold">
+            <span class="tab-icon">📈</span> Threshold Demo
+          </button>
+        </div>
+      </div>
+
+      <!-- ── TAB 1: Syndrome Extraction ── -->
+      <div class="tab-content active" id="tabContentSyndrome">
+        <div class="sc-canvas-wrapper">
+          <canvas id="latticeCanvas" aria-label="Surface code lattice"></canvas>
+          <div class="canvas-overlay" id="canvasOverlay">
+            <div class="overlay-tooltip" id="overlayTooltip"></div>
+          </div>
+        </div>
+
+        <!-- Syndrome Controls -->
+        <div class="control-strip">
+          <div class="control-group">
+            <label class="ctrl-label">Code Distance d</label>
+            <div class="btn-group" id="distanceGroup">
+              <button class="dist-btn active" data-d="3">d=3</button>
+              <button class="dist-btn" data-d="5">d=5</button>
+              <button class="dist-btn" data-d="7">d=7</button>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="ctrl-label">Physical Error Rate p</label>
+            <div class="slider-row">
+              <input type="range" id="errorRateSlider" min="0" max="20" value="5" step="1" class="qslider" />
+              <span class="slider-val" id="errorRateVal">5%</span>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="ctrl-label">Error Type</label>
+            <div class="btn-group" id="errorTypeGroup">
+              <button class="etype-btn active" data-type="X">X errors</button>
+              <button class="etype-btn" data-type="Z">Z errors</button>
+              <button class="etype-btn" data-type="Y">Y errors</button>
+              <button class="etype-btn" data-type="depol">Depol</button>
+            </div>
+          </div>
+
+          <div class="action-btns">
+            <button class="action-btn primary" id="btnInjectErrors">⚡ Inject Errors</button>
+            <button class="action-btn secondary" id="btnRunDecoder">🔧 Run Decoder</button>
+            <button class="action-btn ghost" id="btnReset">↺ Reset</button>
+          </div>
+        </div>
+
+        <!-- Formalism layer panel (hidden by default) -->
+        <div class="formalism-panel" id="formalismPanel" style="display:none;">
+          <div class="eq-box">
+            <span class="eq-label">X-Stabilizer:</span>
+            <span class="eq-formula"><i>A</i><sub>v</sub> = ⊗<sub>e∈v</sub> X<sub>e</sub></span>
+          </div>
+          <div class="eq-box">
+            <span class="eq-label">Z-Stabilizer:</span>
+            <span class="eq-formula"><i>B</i><sub>p</sub> = ⊗<sub>e∈∂p</sub> Z<sub>e</sub></span>
+          </div>
+          <div class="eq-box">
+            <span class="eq-label">Syndrome bit:</span>
+            <span class="eq-formula">s<sub>v</sub> = ⟨G|A<sub>v</sub>|G⟩ ∈ {0,1}</span>
+          </div>
+          <div class="eq-box" id="syndromeCount">
+            <span class="eq-label">Violated stabilizers:</span>
+            <span class="eq-formula" id="syndromeCountVal">0</span>
+          </div>
+        </div>
+
+        <!-- Computation layer panel -->
+        <div class="computation-panel" id="computationPanel" style="display:none;">
+          <pre id="computationLog" class="comp-log">// Stabilizer measurement log
+// Inject errors to begin...</pre>
+        </div>
+      </div>
+
+      <!-- ── TAB 2: Anyon Braiding ── -->
+      <div class="tab-content" id="tabContentBraiding">
+        <div class="sc-canvas-wrapper">
+          <canvas id="braidingCanvas" aria-label="Anyon braiding canvas"></canvas>
+        </div>
+        <div class="control-strip">
+          <div class="control-group">
+            <label class="ctrl-label">Operation</label>
+            <div class="btn-group">
+              <button class="etype-btn active" id="braidOpX">Logical X̄</button>
+              <button class="etype-btn" id="braidOpZ">Logical Z̄</button>
+              <button class="etype-btn" id="braidOpReset">Clear Paths</button>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="ctrl-label">Anyon Type</label>
+            <div class="legend-row">
+              <span class="legend-dot" style="background:#ef4444;"></span><span>e-type (Z errors)</span>
+              <span class="legend-dot" style="background:#3b82f6;" style="margin-left:12px;"></span><span>m-type (X errors)</span>
+            </div>
+          </div>
+          <div class="action-btns">
+            <button class="action-btn primary" id="btnSpawnAnyons">✦ Spawn Anyons</button>
+            <button class="action-btn ghost" id="btnClearBraiding">↺ Clear</button>
+          </div>
+        </div>
+
+        <div class="braid-info glass-panel" id="braidInfo">
+          <p class="braid-status" id="braidStatus">Click "Spawn Anyons" to place anyon pairs on the lattice. Then drag anyons to braid them.</p>
+          <div class="logical-indicator" id="logicalIndicator">
+            <span class="li-label">Logical X̄:</span>
+            <span class="li-val" id="liX">Identity</span>
+            <span class="li-label">Logical Z̄:</span>
+            <span class="li-val" id="liZ">Identity</span>
+          </div>
+        </div>
+
+        <div class="formalism-panel" id="braidFormalismPanel" style="display:none;">
+          <div class="eq-box">
+            <span class="eq-label">Logical X̄:</span>
+            <span class="eq-formula">X̄ = ⊗<sub>i∈row</sub> X<sub>i</sub> (horizontal chain)</span>
+          </div>
+          <div class="eq-box">
+            <span class="eq-label">Logical Z̄:</span>
+            <span class="eq-formula">Z̄ = ⊗<sub>j∈col</sub> Z<sub>j</sub> (vertical chain)</span>
+          </div>
+          <div class="eq-box">
+            <span class="eq-label">Braiding:</span>
+            <span class="eq-formula">e × m → fermion (statistical phase π)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── TAB 3: Threshold Demo ── -->
+      <div class="tab-content" id="tabContentThreshold">
+        <div class="threshold-layout">
+          <div class="chart-panel glass-panel">
+            <div class="chart-header">
+              <h3>Logical Error Rate vs. Physical Error Rate</h3>
+              <p class="chart-desc">Curves cross at the fault-tolerance threshold p<sub>th</sub> ≈ 1%</p>
+            </div>
+            <div class="chart-container">
+              <canvas id="thresholdChart"></canvas>
+            </div>
+          </div>
+
+          <div class="threshold-controls">
+            <div class="control-group">
+              <label class="ctrl-label">Monte Carlo Shots per Point</label>
+              <div class="slider-row">
+                <input type="range" id="shotsSlider" min="20" max="500" value="100" step="20" class="qslider" />
+                <span class="slider-val" id="shotsVal">100</span>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="ctrl-label">Code Distances</label>
+              <div class="checkbox-group">
+                <label class="cb-label"><input type="checkbox" id="cbD3" checked /> d = 3</label>
+                <label class="cb-label"><input type="checkbox" id="cbD5" checked /> d = 5</label>
+                <label class="cb-label"><input type="checkbox" id="cbD7" checked /> d = 7</label>
+                <label class="cb-label"><input type="checkbox" id="cbD9" /> d = 9</label>
+              </div>
+            </div>
+            <div class="action-btns">
+              <button class="action-btn primary" id="btnRunMC">▶ Run Simulation</button>
+              <button class="action-btn ghost" id="btnClearChart">↺ Clear</button>
+            </div>
+
+            <div class="threshold-info glass-panel" id="thresholdInfoBox">
+              <div class="th-stat">
+                <span class="th-label">Threshold p<sub>th</sub></span>
+                <span class="th-val" id="thVal">~1.0%</span>
+              </div>
+              <div class="th-stat">
+                <span class="th-label">Simulation progress</span>
+                <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+              </div>
+              <p class="th-note">Below threshold: larger d gives lower logical error rate.<br/>Above threshold: larger d is <em>worse</em>.</p>
+            </div>
+
+            <div class="formalism-panel" id="thrFormalismPanel" style="display:none;">
+              <div class="eq-box">
+                <span class="eq-label">Logical error rate:</span>
+                <span class="eq-formula">p<sub>L</sub> ≈ A (p/p<sub>th</sub>)<sup>⌊(d+1)/2⌋</sup></span>
+              </div>
+              <div class="eq-box">
+                <span class="eq-label">Distance gain:</span>
+                <span class="eq-formula">Δp<sub>L</sub>/Δd &lt; 0 iff p &lt; p<sub>th</sub></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Right Sidebar ── -->
+    <aside class="sc-sidebar">
+      <div class="sidebar-section glass-panel">
+        <h3 class="sidebar-title">Lattice Legend</h3>
+        <div class="legend-list">
+          <div class="legend-item">
+            <div class="legend-swatch data-qubit-swatch"></div>
+            <span>Data qubit (no error)</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-swatch x-error-swatch"></div>
+            <span>X error (bit flip)</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-swatch z-error-swatch"></div>
+            <span>Z error (phase flip)</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-swatch y-error-swatch"></div>
+            <span>Y error (both)</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-swatch x-stab-swatch"></div>
+            <span>X-stabilizer ancilla</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-swatch z-stab-swatch"></div>
+            <span>Z-stabilizer ancilla</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-swatch syndrome-swatch"></div>
+            <span>Violated stabilizer (syndrome)</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-swatch correction-swatch"></div>
+            <span>Decoder correction</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-section glass-panel">
+        <h3 class="sidebar-title">Logical State</h3>
+        <div class="logical-state-display" id="logicalStateDisplay">
+          <div class="ls-row">
+            <span class="ls-key">Logical |0̄⟩:</span>
+            <span class="ls-val green" id="lsZero">✓ Protected</span>
+          </div>
+          <div class="ls-row">
+            <span class="ls-key">Logic error:</span>
+            <span class="ls-val" id="lsError">None</span>
+          </div>
+          <div class="ls-row">
+            <span class="ls-key">Syndrome weight:</span>
+            <span class="ls-val mono" id="lsWeight">0</span>
+          </div>
+          <div class="ls-row">
+            <span class="ls-key">Correction chain:</span>
+            <span class="ls-val mono" id="lsChain">—</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-section glass-panel">
+        <h3 class="sidebar-title">About Surface Code</h3>
+        <div class="about-text" id="aboutText">
+          <p>The <strong>surface code</strong> (Kitaev 2003) is the leading candidate for fault-tolerant quantum computing, offering a threshold of <em>p<sub>th</sub> ≈ 1%</em>.</p>
+          <p>Data qubits sit on a 2D lattice. <em>Stabilizers</em> A<sub>v</sub> = ⊗X and B<sub>p</sub> = ⊗Z are measured via ancilla qubits — any violated stabilizer (±1 eigenvalue) signals a nearby error.</p>
+          <p>A <em>minimum-weight perfect matching</em> (MWPM) decoder pairs syndromes and applies corrections. Below threshold, logical error rate drops <strong>exponentially</strong> with code distance d.</p>
+          <p style="margin-top:6px;font-size:0.74rem;">p<sub>L</sub> ≈ A(p/p<sub>th</sub>)<sup>⌊(d+1)/2⌋</sup></p>
+        </div>
+      </div>
+
+      <div class="sidebar-section glass-panel" id="predictiveChallenge" style="display:none;">
+        <h3 class="sidebar-title">🎯 Predict & Learn</h3>
+        <p class="challenge-q" id="challengeQ">Predict the outcome before running the decoder…</p>
+        <div class="challenge-btns">
+          <button class="action-btn secondary" id="challengeA">Will Correct</button>
+          <button class="action-btn secondary" id="challengeB">Logical Error</button>
+        </div>
+        <div class="challenge-result" id="challengeResult" style="display:none;"></div>
+      </div>
+    </aside>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="surface-code.js"></script>
+</body>
+</html>

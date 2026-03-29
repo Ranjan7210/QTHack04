@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QuantumViz — Interactive Quantum Mechanics Simulator</title>
+  <meta name="description" content="Transform abstract quantum mechanics into visceral, interactive visual experiences. Explore Bloch spheres, surface code error correction, Bell inequalities and more — entirely in your browser." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="index.css" />
+</head>
+<body>
+  <div class="bg-canvas" id="bgCanvas"></div>
+  <div class="noise-overlay"></div>
+
+  <!-- ── Navigation ── -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand">
+        <span class="brand-icon">⟨ψ|</span>
+        <span class="brand-text">QuantumViz</span>
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="#modules"    class="nav-link">Modules</a>
+        <a href="#howit"      class="nav-link">How It Works</a>
+        <a href="#research"   class="nav-link">Research</a>
+        <a href="surface-code.html" class="nav-cta">Launch Simulator →</a>
+      </div>
+      <button class="theme-toggle" id="themeToggle" title="Toggle light/dark mode" aria-label="Toggle theme">🌙</button>
+      <button class="nav-hamburger" id="navHamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ── Hero ── -->
+  <section class="hero" id="hero">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        Open-Source · No Install Required · Runs in Browser
+      </div>
+      <h1 class="hero-title">
+        Quantum Physics,<br />
+        <span class="gradient-text">Finally Visible</span>
+      </h1>
+      <p class="hero-subtitle">
+        QuantumViz bridges the gap between mathematical formalism and physical intuition.
+        Manipulate qubits live, watch entanglement form, and run fault-tolerance simulations
+        — all from a single browser tab. Built for students, researchers, and hackathon judges.
+      </p>
+      <div class="hero-actions">
+        <a href="surface-code.html" class="btn-primary" id="heroLaunch">
+          <span>Explore Surface Code</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="bloch-sphere.html" class="btn-secondary">Bloch Sphere →</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-value">8+</span>
+          <span class="stat-label">Experiment Modules</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-value">3</span>
+          <span class="stat-label">Knowledge Layers</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-value">0ms</span>
+          <span class="stat-label">Setup Time</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-value">∞</span>
+          <span class="stat-label">Experiments</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual" id="heroVisual">
+      <div class="orbital-rings">
+        <div class="ring ring-1"></div>
+        <div class="ring ring-2"></div>
+        <div class="ring ring-3"></div>
+      </div>
+      <div class="qubit-nodes" id="qubitNodes"></div>
+      <div class="center-sphere"><span>|ψ⟩</span></div>
+    </div>
+  </section>
+
+  <!-- ── Module Grid ── -->
+  <section class="modules-section" id="modules">
+    <div class="section-header">
+      <h2 class="section-title">Experiment <span class="gradient-text">Modules</span></h2>
+      <p class="section-subtitle">From quantum foundations to cutting-edge algorithms — each module is interactive, equation-linked, and pedagogically structured.</p>
+    </div>
+    <div class="modules-grid" id="modulesGrid">
+
+      <!-- Featured -->
+      <div class="module-card featured" data-href="surface-code.html">
+        <div class="module-tag">Module 4.2 · Primary Demo · Fault-Tolerant QC</div>
+        <div class="module-icon qec-icon">
+          <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="8" y="8" width="16" height="16" rx="3" fill="rgba(139,92,246,0.3)" stroke="#8b5cf6" stroke-width="1.5"/>
+            <rect x="28" y="8" width="16" height="16" rx="3" fill="rgba(139,92,246,0.1)" stroke="#8b5cf6" stroke-width="1.5" stroke-dasharray="3 2"/>
+            <rect x="48" y="8" width="8"  height="8"  rx="2" fill="rgba(236,72,153,0.3)" stroke="#ec4899" stroke-width="1.5"/>
+            <rect x="8"  y="28" width="16" height="16" rx="3" fill="rgba(139,92,246,0.1)" stroke="#8b5cf6" stroke-width="1.5" stroke-dasharray="3 2"/>
+            <rect x="28" y="28" width="16" height="16" rx="3" fill="rgba(59,130,246,0.3)"  stroke="#3b82f6" stroke-width="1.5"/>
+            <rect x="8"  y="48" width="8"  height="8"  rx="2" fill="rgba(236,72,153,0.3)" stroke="#ec4899" stroke-width="1.5"/>
+            <line x1="16" y1="24" x2="16" y2="28" stroke="#8b5cf6" stroke-width="1.5"/>
+            <line x1="24" y1="16" x2="28" y2="16" stroke="#8b5cf6" stroke-width="1.5"/>
+            <line x1="36" y1="24" x2="36" y2="28" stroke="#3b82f6" stroke-width="1.5"/>
+            <circle cx="52" cy="12" r="3" fill="#ec4899"/>
+            <circle cx="12" cy="52" r="3" fill="#ec4899"/>
+          </svg>
+        </div>
+        <h3 class="module-title">Surface Code Lattice — Quantum Error Correction</h3>
+        <p class="module-desc">The cornerstone of fault-tolerant quantum computing. Visualize syndrome extraction on a d×d lattice, watch anyons braid to perform logical operations, and run Monte Carlo simulations to discover the fault-tolerance threshold (p<sub>th</sub> ≈ 1%) where larger codes actually <em>help</em>. Built with a real MWPM-approximation decoder, live stabilizer equations, and three knowledge layers from intuition to Qiskit-ready pseudocode.</p>
+        <div class="module-tags">
+          <span class="tag purple">QEC</span>
+          <span class="tag blue">Anyons</span>
+          <span class="tag pink">Threshold p<sub>th</sub></span>
+          <span class="tag cyan">Stabilizers</span>
+          <span class="tag green">MWPM Decoder</span>
+        </div>
+        <a href="surface-code.html" class="module-btn featured-btn">Launch Interactive Module →</a>
+      </div>
+
+      <!-- Bloch Sphere -->
+      <div class="module-card" data-href="bloch-sphere.html">
+        <div class="module-tag">Module 1.1 · Single Qubit</div>
+        <div class="module-icon">🌐</div>
+        <h3 class="module-title">Bloch Sphere Navigator</h3>
+        <p class="module-desc">Real-time 3D single-qubit state manipulation with live gate animations. Apply H, X, Y, Z, S, T, Rx(θ), Rz(θ) gates and watch the state vector sweep arcs on the sphere. Live bra-ket notation and probability readout in every frame.</p>
+        <div class="module-tags">
+          <span class="tag cyan">Single Qubit</span>
+          <span class="tag green">8 Gates</span>
+          <span class="tag purple">3D Canvas</span>
+        </div>
+        <a href="bloch-sphere.html" class="module-btn">Explore →</a>
+      </div>
+
+      <!-- Double Slit -->
+      <div class="module-card locked">
+        <div class="module-tag">Module 2.1 · Coming Soon</div>
+        <div class="module-icon">〰️</div>
+        <h3 class="module-title">Double-Slit Experiment</h3>
+        <p class="module-desc">Toggle which-path detectors and watch interference fringes vanish. Complementarity and wave-particle duality made tangible.</p>
+        <div class="module-tags"><span class="tag amber">Wave Optics</span><span class="tag gray">Complementarity</span></div>
+        <span class="module-btn locked-btn">Coming Soon</span>
+      </div>
+
+      <!-- Bell -->
+      <div class="module-card locked">
+        <div class="module-tag">Module 3.1 · Coming Soon</div>
+        <div class="module-icon">🔔</div>
+        <h3 class="module-title">Bell Inequality Violation</h3>
+        <p class="module-desc">Play the CHSH game. Compare quantum strategy (cos² 22.5° ≈ 85%) against the local hidden-variable bound (75%). Violation proven visually.</p>
+        <div class="module-tags"><span class="tag purple">Entanglement</span><span class="tag pink">CHSH</span></div>
+        <span class="module-btn locked-btn">Coming Soon</span>
+      </div>
+
+      <!-- Teleportation -->
+      <div class="module-card locked">
+        <div class="module-tag">Module 3.3 · Coming Soon</div>
+        <div class="module-icon">📡</div>
+        <h3 class="module-title">Quantum Teleportation</h3>
+        <p class="module-desc">Step-by-step protocol: EPR pair creation → Bell measurement → classical bits → correction. No state is copied; no FTL signaling occurs.</p>
+        <div class="module-tags"><span class="tag purple">Protocol</span><span class="tag green">EPR</span></div>
+        <span class="module-btn locked-btn">Coming Soon</span>
+      </div>
+
+      <!-- Grover -->
+      <div class="module-card locked">
+        <div class="module-tag">Module 5.1 · Coming Soon</div>
+        <div class="module-icon">🔍</div>
+        <h3 class="module-title">Grover's Search Algorithm</h3>
+        <p class="module-desc">Amplitude amplification as a rotation in 2D subspace — from √N iterations to the target state. Geometric proof animated in real time.</p>
+        <div class="module-tags"><span class="tag blue">Algorithm</span><span class="tag cyan">O(√N)</span></div>
+        <span class="module-btn locked-btn">Coming Soon</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── How It Works ── -->
+  <section class="howit-section" id="howit">
+    <div class="section-header">
+      <h2 class="section-title">How <span class="gradient-text">It Works</span></h2>
+      <p class="section-subtitle">QuantumViz runs a real physics engine in your browser — no server, no install.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num p">01</div>
+        <span class="step-title">Choose a Module</span>
+        <p class="step-desc">Select from curated experiments spanning foundations to advanced algorithms. Each module is self-contained and immediately interactive.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num b">02</div>
+        <span class="step-title">Manipulate the Physics</span>
+        <p class="step-desc">Drag Bloch vectors, inject quantum errors, tune Hamiltonians with sliders, or braid anyons with your mouse. Every control maps to a real quantum operation.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num c">03</div>
+        <span class="step-title">See the Math Update</span>
+        <p class="step-desc">Toggle the Formalism layer to see live bra-ket notation, stabilizer equations, and expectation values respond to every physical change in real time.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num g">04</div>
+        <span class="step-title">Build Intuition</span>
+        <p class="step-desc">Predict outcomes with Predictive Challenge mode. Misconception detection surfaces targeted micro-lessons when common errors (e.g. ignoring relative phase) occur.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Knowledge Layers ── -->
+  <section class="about-section" id="about">
+    <div class="about-grid">
+      <div class="about-content">
+        <h2 class="section-title">Three Layers of <span class="gradient-text">Understanding</span></h2>
+        <p class="about-desc">Progressive disclosure keeps beginners engaged and experts satisfied. Switch layers at any time — the simulation doesn't pause.</p>
+        <div class="layers-list">
+          <div class="layer-item active" id="layer0">
+            <div class="layer-icon" style="background:rgba(139,92,246,0.15);border-color:#8b5cf6;">🌊</div>
+            <div class="layer-text">
+              <span class="layer-name">Layer 1 · Intuition</span>
+              <p>Probability clouds, spin arrows, entanglement threads. Phase encodes to hue; amplitude encodes to brightness. Zero equations required.</p>
+            </div>
+          </div>
+          <div class="layer-item" id="layer1">
+            <div class="layer-icon" style="background:rgba(59,130,246,0.15);border-color:#3b82f6;">∑</div>
+            <div class="layer-text">
+              <span class="layer-name">Layer 2 · Formalism</span>
+              <p>Bra-ket notation overlays on every element. Live Hamiltonian, stabilizer generators A<sub>v</sub>, B<sub>p</sub>, and expectation values ⟨A⟩ alongside the animation.</p>
+            </div>
+          </div>
+          <div class="layer-item" id="layer2">
+            <div class="layer-icon" style="background:rgba(16,185,129,0.15);border-color:#10b981;">⌨</div>
+            <div class="layer-text">
+              <span class="layer-name">Layer 3 · Computation</span>
+              <p>Step-by-step computation log. Numerical methods exposed — matrix exponentiation, MWPM matching, Monte Carlo shot counts. Export pseudocode to Qiskit.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="about-visual">
+        <div class="layer-demo" id="layerDemo">
+          <div class="demo-panel active-panel" id="demoPanel0">
+            <div class="demo-metaphor">
+              <span class="wave-emoji">⚛️</span>
+              <p>The qubit lives in a <strong>superposition</strong> of |0⟩ and |1⟩ until measured.<br/>Bar height = probability of each outcome.</p>
+              <div class="prob-bars">
+                <div class="prob-bar" style="height:78%;background:#8b5cf6;"><span>|0⟩</span></div>
+                <div class="prob-bar" style="height:46%;background:#ec4899;"><span>|1⟩</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="demo-panel" id="demoPanel1">
+            <div class="demo-formalism">
+              <div class="eq">|ψ⟩ = α|0⟩ + β|1⟩</div>
+              <div class="eq-sub">α = cos(θ/2)</div>
+              <div class="eq-sub">β = e<sup>iφ</sup> sin(θ/2)</div>
+              <div class="eq-sub">|α|² + |β|² = 1 &nbsp;(normalization)</div>
+              <div class="eq-sub" style="color:var(--cyan);margin-top:8px;">Prob(0) = ⟨ψ|P₀|ψ⟩ = |α|²</div>
+            </div>
+          </div>
+          <div class="demo-panel" id="demoPanel2">
+            <div class="demo-code">
+              <pre><code><span class="kw">from</span> qiskit <span class="kw">import</span> QuantumCircuit
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+qc = QuantumCircuit(<span class="num">1</span>, <span class="num">1</span>)
+qc.ry(<span class="num">2</span> * theta, <span class="num">0</span>)   <span class="cm"># set θ</span>
+qc.rz(phi,        <span class="num">0</span>)   <span class="cm"># set φ</span>
+qc.measure(<span class="num">0</span>, <span class="num">0</span>)
+<span class="cm"># Born rule: P(0) = cos²(θ/2)</span></code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Tech Stack ── -->
+  <section class="tech-section">
+    <div class="tech-ribbon">
+      <span class="tech-label">Built With</span>
+      <div class="tech-pills">
+        <span class="tech-pill canvas">Canvas 2D API</span>
+        <span class="tech-pill chartjs">Chart.js 4</span>
+        <span class="tech-pill math">Monte Carlo Physics</span>
+        <span class="tech-pill html">Vanilla HTML/CSS/JS</span>
+        <span class="tech-pill algo">MWPM Decoder</span>
+        <span class="tech-pill canvas">3D Projection Engine</span>
+        <span class="tech-pill chartjs">Bloch Sphere Renderer</span>
+        <span class="tech-pill math">Stabilizer Formalism</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Research Citations ── -->
+  <section class="citations-section" id="research">
+    <div class="section-header" style="text-align:left;margin-bottom:0;">
+      <h2 class="section-title">Research <span class="gradient-text">Foundation</span></h2>
+      <p class="section-subtitle" style="margin:0;text-align:left;">QuantumViz is grounded in peer-reviewed quantum information science.</p>
+    </div>
+    <div class="citations-grid">
+      <div class="citation-card">
+        <p class="citation-title">Topological quantum memory</p>
+        <p class="citation-authors">A. Yu. Kitaev</p>
+        <p class="citation-venue">J. Math. Phys. 44, 2003</p>
+      </div>
+      <div class="citation-card">
+        <p class="citation-title">Threshold error rates for the toric code</p>
+        <p class="citation-authors">E. Dennis, A. Kitaev, A. Landahl, J. Preskill</p>
+        <p class="citation-venue">J. Math. Phys. 43, 2002</p>
+      </div>
+      <div class="citation-card">
+        <p class="citation-title">Quantum Error Correction: An Introductory Guide</p>
+        <p class="citation-authors">Joschka Roffe</p>
+        <p class="citation-venue">Contemp. Phys. 60(3), 2019</p>
+      </div>
+      <div class="citation-card">
+        <p class="citation-title">Surface codes: Towards practical large-scale quantum computation</p>
+        <p class="citation-authors">Austin G. Fowler et al.</p>
+        <p class="citation-venue">Phys. Rev. A 86, 032324, 2012</p>
+      </div>
+      <div class="citation-card">
+        <p class="citation-title">Non-Abelian anyons and topological quantum computation</p>
+        <p class="citation-authors">C. Nayak, S. H. Simon, A. Stern, M. Freedman, S. Das Sarma</p>
+        <p class="citation-venue">Rev. Mod. Phys. 80, 2008</p>
+      </div>
+      <div class="citation-card">
+        <p class="citation-title">A fast minimum weight perfect matching implementation</p>
+        <p class="citation-authors">Vladimir Kolmogorov</p>
+        <p class="citation-venue">Math. Prog. Comp. 1(1), 2009</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="brand-icon">⟨ψ|</span>
+          <span class="brand-text">QuantumViz</span>
+        </div>
+        <p>Making quantum mechanics visceral, interactive, and accessible.</p>
+        <p style="margin-top:4px;color:var(--text-muted);font-size:0.72rem;">Open source · No dependencies · Pure browser</p>
+      </div>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="surface-code.html">Surface Code</a>
+        <a href="bloch-sphere.html">Bloch Sphere</a>
+      </div>
+      <p class="footer-note">Canvas API · Chart.js · JetBrains Mono · Space Grotesk</p>
+    </div>
+  </footer>
+
+  <script src="index.js"></script>
+</body>
+</html>

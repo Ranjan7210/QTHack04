@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bloch Sphere Navigator — Module 1.1 · QuantumViz</title>
+  <meta name="description" content="Interactive 3D Bloch sphere: manipulate single-qubit states, apply quantum gates, and watch the state vector evolve in real time." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="index.css" />
+  <link rel="stylesheet" href="bloch-sphere.css" />
+  <script>(function(){var t=localStorage.getItem('qviz-theme')||'dark';document.documentElement.setAttribute('data-theme',t);})();</script>
+</head>
+<body class="bs-body">
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand">
+        <span class="brand-icon">⟨ψ|</span>
+        <span class="brand-text">QuantumViz</span>
+      </a>
+      <div class="nav-links">
+        <span class="nav-breadcrumb">/ Module 1.1 / Bloch Sphere</span>
+        <a href="surface-code.html" class="nav-link">Surface Code</a>
+        <a href="index.html" class="nav-link">All Modules</a>
+      </div>
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">🌙</button>
+    </div>
+  </nav>
+
+  <div class="bs-layout">
+    <!-- Canvas -->
+    <div class="bs-canvas-panel">
+      <div class="bs-header">
+        <span class="module-badge">Module 1.1</span>
+        <h1 class="bs-title">Bloch Sphere Navigator</h1>
+        <p class="bs-subtitle">Real-time 3D single-qubit state manipulation</p>
+      </div>
+      <div class="bs-canvas-wrap">
+        <canvas id="blochCanvas"></canvas>
+        <div class="bs-labels">
+          <span class="axis-label" id="lblZ1">|0⟩</span>
+          <span class="axis-label" id="lblZm">|1⟩</span>
+          <span class="axis-label" id="lblX1">|+⟩</span>
+          <span class="axis-label" id="lblXm">|−⟩</span>
+          <span class="axis-label" id="lblY1">|i⟩</span>
+          <span class="axis-label" id="lblYm">|−i⟩</span>
+        </div>
+      </div>
+
+      <!-- State display -->
+      <div class="state-display glass-panel">
+        <div class="state-eq" id="stateEq">|ψ⟩ = |0⟩</div>
+        <div class="state-angles">
+          <span class="angle-lbl">θ:</span><span class="angle-val" id="dispTheta">0°</span>
+          <span class="angle-lbl">φ:</span><span class="angle-val" id="dispPhi">0°</span>
+          <span class="angle-lbl">|α|²:</span><span class="angle-val green" id="dispP0">1.00</span>
+          <span class="angle-lbl">|β|²:</span><span class="angle-val pink" id="dispP1">0.00</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <aside class="bs-sidebar">
+      <!-- Layer toggle -->
+      <div class="sidebar-section glass-panel">
+        <h3 class="sidebar-title">Knowledge Layer</h3>
+        <div class="layer-toggle-group" id="bsLayerToggle" style="width:100%;border-radius:10px;">
+          <button class="layer-btn active" data-layer="0">🌊 Intuition</button>
+          <button class="layer-btn" data-layer="1">∑ Formalism</button>
+        </div>
+      </div>
+
+      <!-- Gate Buttons -->
+      <div class="sidebar-section glass-panel">
+        <h3 class="sidebar-title">Quantum Gates</h3>
+        <div class="gate-grid" id="gateGrid">
+          <button class="gate-btn" data-gate="H"  title="Hadamard">H</button>
+          <button class="gate-btn" data-gate="X"  title="Pauli-X (NOT)">X</button>
+          <button class="gate-btn" data-gate="Y"  title="Pauli-Y">Y</button>
+          <button class="gate-btn" data-gate="Z"  title="Pauli-Z">Z</button>
+          <button class="gate-btn cyan" data-gate="S"  title="S gate (√Z)">S</button>
+          <button class="gate-btn cyan" data-gate="T"  title="T gate (π/8)">T</button>
+          <button class="gate-btn pink" data-gate="Rx" title="Rotate around X">Rx</button>
+          <button class="gate-btn pink" data-gate="Rz" title="Rotate around Z">Rz</button>
+        </div>
+        <div class="angle-ctrl" id="angleCtrl" style="display:none;">
+          <label class="ctrl-label">Rotation angle</label>
+          <div class="slider-row">
+            <input type="range" id="rotAngle" min="-180" max="180" value="90" class="qslider" />
+            <span class="slider-val" id="rotAngleVal">90°</span>
+          </div>
+          <button class="action-btn primary" id="applyRotBtn" style="margin-top:8px;width:100%;">Apply Rotation</button>
+        </div>
+      </div>
+
+      <!-- Theta / Phi sliders -->
+      <div class="sidebar-section glass-panel">
+        <h3 class="sidebar-title">Manual State</h3>
+        <div class="control-group">
+          <label class="ctrl-label">θ (polar angle)</label>
+          <div class="slider-row">
+            <input type="range" id="thetaSlider" min="0" max="180" value="0" step="1" class="qslider" />
+            <span class="slider-val" id="thetaVal">0°</span>
+          </div>
+        </div>
+        <div class="control-group" style="margin-top:12px;">
+          <label class="ctrl-label">φ (azimuthal angle)</label>
+          <div class="slider-row">
+            <input type="range" id="phiSlider" min="0" max="360" value="0" step="1" class="qslider" />
+            <span class="slider-val" id="phiVal">0°</span>
+          </div>
+        </div>
+        <button class="action-btn ghost" id="btnResetState" style="margin-top:12px;width:100%;">↺ Reset to |0⟩</button>
+      </div>
+
+      <!-- Preset states -->
+      <div class="sidebar-section glass-panel">
+        <h3 class="sidebar-title">Basis States</h3>
+        <div class="preset-grid">
+          <button class="preset-btn" data-theta="0"   data-phi="0">|0⟩</button>
+          <button class="preset-btn" data-theta="180" data-phi="0">|1⟩</button>
+          <button class="preset-btn" data-theta="90"  data-phi="0">|+⟩</button>
+          <button class="preset-btn" data-theta="90"  data-phi="180">|−⟩</button>
+          <button class="preset-btn" data-theta="90"  data-phi="90">|i⟩</button>
+          <button class="preset-btn" data-theta="90"  data-phi="270">|−i⟩</button>
+        </div>
+      </div>
+
+      <!-- Gate history -->
+      <div class="sidebar-section glass-panel">
+        <h3 class="sidebar-title">Gate History</h3>
+        <div class="gate-history" id="gateHistory">
+          <span class="history-empty">No gates applied yet</span>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <script src="bloch-sphere.js"></script>
+</body>
+</html>

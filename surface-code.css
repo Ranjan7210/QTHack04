@@ -303,49 +303,6 @@
   margin-left: auto;
 }
 
-.action-btn {
-  padding: 9px 18px;
-  border-radius: 8px;
-  font-size: 0.82rem;
-  font-weight: 600;
-  cursor: pointer;
-  font-family: var(--font-sans);
-  border: 1px solid transparent;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-
-.action-btn.primary {
-  background: linear-gradient(135deg, var(--purple), #6d28d9);
-  color: white;
-  box-shadow: 0 0 16px rgba(139,92,246,0.3);
-}
-
-.action-btn.primary:hover {
-  box-shadow: 0 0 28px rgba(139,92,246,0.5);
-  transform: translateY(-1px);
-}
-
-.action-btn.secondary {
-  background: rgba(59,130,246,0.1);
-  color: var(--blue);
-  border-color: rgba(59,130,246,0.25);
-}
-
-.action-btn.secondary:hover {
-  background: rgba(59,130,246,0.2);
-}
-
-.action-btn.ghost {
-  background: rgba(255,255,255,0.04);
-  color: var(--text-secondary);
-  border-color: var(--border-glass);
-}
-
-.action-btn.ghost:hover {
-  background: rgba(255,255,255,0.08);
-  color: var(--text-primary);
-}
 
 /* ── Equation Panels ── */
 .formalism-panel, .computation-panel {
@@ -847,27 +804,6 @@
   background: rgba(0,0,0,0.12);
 }
 
-/* Action buttons */
-[data-theme="light"] .action-btn.ghost {
-  background: rgba(0,0,0,0.04);
-  color: #475569;
-  border-color: rgba(0,0,0,0.12);
-}
-
-[data-theme="light"] .action-btn.ghost:hover {
-  background: rgba(0,0,0,0.08);
-  color: #0f172a;
-}
-
-[data-theme="light"] .action-btn.secondary {
-  background: rgba(29,78,216,0.08);
-  color: #1d4ed8;
-  border-color: rgba(29,78,216,0.2);
-}
-
-[data-theme="light"] .action-btn.secondary:hover {
-  background: rgba(29,78,216,0.15);
-}
 
 /* Formalism / equation panels */
 [data-theme="light"] .formalism-panel,

@@ -1,0 +1,253 @@
+/* ============================================================
+   Future Vision Page — future.css
+   ============================================================ */
+
+.fut-main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 90px 28px 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+.fut-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.section-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.section-subtitle {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+}
+
+/* ═══ Industry Grid ═══ */
+.industry-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.industry-card {
+  padding: 24px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-glass);
+  background: var(--bg-card);
+  backdrop-filter: blur(20px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+[data-theme="light"] .industry-card {
+  background: #fff;
+  border-color: rgba(0,0,0,0.1);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+
+.industry-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+  border-color: rgba(139,92,246,0.3);
+}
+
+.ind-logo {
+  font-size: 2rem;
+  margin-bottom: 12px;
+}
+
+.industry-card h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.ind-stat {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--purple);
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.industry-card p {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.ind-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* ═══ Timeline ═══ */
+.timeline {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding-left: 24px;
+}
+
+.tl-line {
+  position: absolute;
+  left: 5px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: linear-gradient(180deg, var(--purple), var(--cyan), var(--pink));
+  opacity: 0.5;
+}
+
+.tl-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tl-dot {
+  position: absolute;
+  left: -24px;
+  top: 6px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--bg-deep);
+  border: 2px solid var(--purple);
+  z-index: 2;
+  box-shadow: 0 0 10px rgba(139,92,246,0.5);
+}
+
+.tl-item:nth-child(3) .tl-dot { border-color: var(--cyan); box-shadow: 0 0 10px rgba(6,182,212,0.5); }
+.tl-item:nth-child(4) .tl-dot { border-color: var(--pink); box-shadow: 0 0 10px rgba(236,72,153,0.5); }
+.tl-item:nth-child(5) .tl-dot { border-color: var(--green); box-shadow: 0 0 10px rgba(16,185,129,0.5); }
+
+.tl-year {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--purple);
+}
+
+.tl-content {
+  padding: 20px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-glass);
+}
+
+[data-theme="light"] .tl-content {
+  background: #fff;
+  border-color: rgba(0,0,0,0.1);
+}
+
+.tl-content h4 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.tl-content p {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ═══ What If Cards ═══ */
+.whatif-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.whatif-card {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-glass);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+[data-theme="light"] .whatif-card {
+  background: #fff;
+  border-color: rgba(0,0,0,0.1);
+}
+
+.whatif-card:hover {
+  border-color: rgba(139,92,246,0.3);
+  background: rgba(139,92,246,0.03);
+}
+
+[data-theme="light"] .whatif-card:hover {
+  background: #f8faff;
+}
+
+.wi-header {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  gap: 12px;
+}
+
+.wi-icon { font-size: 1.4rem; }
+.wi-header h4 { font-size: 1.05rem; font-weight: 600; flex: 1; }
+.wi-toggle { font-family: var(--font-mono); font-size: 1.2rem; color: var(--purple); font-weight: 700; transition: transform 0.3s ease;}
+
+.wi-body {
+  padding: 0 20px;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.wi-body p {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.wi-body strong { color: var(--text-primary); }
+
+.whatif-card.expanded {
+  background: rgba(139,92,246,0.05);
+  border-color: rgba(139,92,246,0.4);
+}
+
+[data-theme="light"] .whatif-card.expanded {
+  background: #f8faff;
+}
+
+.whatif-card.expanded .wi-toggle {
+  transform: rotate(45deg);
+  color: var(--pink);
+}
+
+.whatif-card.expanded .wi-body {
+  padding: 0 20px 20px;
+  max-height: 400px;
+  opacity: 1;
+}
+
+/* ═══ Responsive ═══ */
+@media (max-width: 800px) {
+  .industry-grid { grid-template-columns: 1fr; }
+  .whatif-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+  .fut-main { padding: 80px 16px 40px; }
+  .tl-content { padding: 16px; }
+  .wi-header { padding: 16px; }
+  .wi-body, .whatif-card.expanded .wi-body { padding-left: 16px; padding-right: 16px; }
+}

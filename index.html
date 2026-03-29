@@ -22,9 +22,10 @@
         <span class="brand-text">QuantumViz</span>
       </a>
       <div class="nav-links" id="navLinks">
-        <a href="#modules"    class="nav-link">Modules</a>
-        <a href="#howit"      class="nav-link">How It Works</a>
-        <a href="#research"   class="nav-link">Research</a>
+        <a href="playground.html" class="nav-link">Playground</a>
+        <a href="applications.html" class="nav-link">Applications</a>
+        <a href="algorithms.html" class="nav-link">Algorithms</a>
+        <a href="future.html" class="nav-link">Future Vision</a>
         <a href="surface-code.html" class="nav-cta">Launch Simulator →</a>
       </div>
       <button class="theme-toggle" id="themeToggle" title="Toggle light/dark mode" aria-label="Toggle theme">🌙</button>
@@ -51,11 +52,11 @@
         — all from a single browser tab. Built for students, researchers, and hackathon judges.
       </p>
       <div class="hero-actions">
-        <a href="surface-code.html" class="btn-primary" id="heroLaunch">
-          <span>Explore Surface Code</span>
+        <a href="playground.html" class="btn-primary" id="heroLaunch">
+          <span>Start Playing Now</span>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
-        <a href="bloch-sphere.html" class="btn-secondary">Bloch Sphere →</a>
+        <a href="#modules" class="btn-secondary">Explore Modules →</a>
       </div>
       <div class="hero-stats">
         <div class="stat">
@@ -142,44 +143,44 @@
         <a href="bloch-sphere.html" class="module-btn">Explore →</a>
       </div>
 
-      <!-- Double Slit -->
-      <div class="module-card locked">
-        <div class="module-tag">Module 2.1 · Coming Soon</div>
-        <div class="module-icon">〰️</div>
-        <h3 class="module-title">Double-Slit Experiment</h3>
-        <p class="module-desc">Toggle which-path detectors and watch interference fringes vanish. Complementarity and wave-particle duality made tangible.</p>
-        <div class="module-tags"><span class="tag amber">Wave Optics</span><span class="tag gray">Complementarity</span></div>
-        <span class="module-btn locked-btn">Coming Soon</span>
+      <!-- Applications Race -->
+      <div class="module-card" data-href="applications.html#solver">
+        <div class="module-tag">Module 2.1 · Real World</div>
+        <div class="module-icon">🏎️</div>
+        <h3 class="module-title">Classical vs Quantum Race</h3>
+        <p class="module-desc">Watch a classical computer race against a quantum computer on real-world problems like database search and route optimization. Experience the speedup.</p>
+        <div class="module-tags"><span class="tag amber">Applications</span><span class="tag gray">Speedup</span></div>
+        <a href="applications.html#solver" class="module-btn">Play Race →</a>
       </div>
 
-      <!-- Bell -->
-      <div class="module-card locked">
-        <div class="module-tag">Module 3.1 · Coming Soon</div>
+      <!-- Bell State -->
+      <div class="module-card" data-href="playground.html#entangleDemo">
+        <div class="module-tag">Module 3.1 · Entanglement</div>
         <div class="module-icon">🔔</div>
-        <h3 class="module-title">Bell Inequality Violation</h3>
-        <p class="module-desc">Play the CHSH game. Compare quantum strategy (cos² 22.5° ≈ 85%) against the local hidden-variable bound (75%). Violation proven visually.</p>
-        <div class="module-tags"><span class="tag purple">Entanglement</span><span class="tag pink">CHSH</span></div>
-        <span class="module-btn locked-btn">Coming Soon</span>
+        <h3 class="module-title">Bell State Breakdown</h3>
+        <p class="module-desc">Create entangled pairs, separate them, and measure. Observe perfect correlations instantly and explore what "spooky action" really means.</p>
+        <div class="module-tags"><span class="tag purple">Entanglement</span><span class="tag pink">Bell State</span></div>
+        <a href="playground.html#entangleDemo" class="module-btn">Explore →</a>
       </div>
 
-      <!-- Teleportation -->
-      <div class="module-card locked">
-        <div class="module-tag">Module 3.3 · Coming Soon</div>
-        <div class="module-icon">📡</div>
-        <h3 class="module-title">Quantum Teleportation</h3>
-        <p class="module-desc">Step-by-step protocol: EPR pair creation → Bell measurement → classical bits → correction. No state is copied; no FTL signaling occurs.</p>
-        <div class="module-tags"><span class="tag purple">Protocol</span><span class="tag green">EPR</span></div>
-        <span class="module-btn locked-btn">Coming Soon</span>
+      <!-- Shor's Algorithm -->
+      <div class="module-card" data-href="algorithms.html#shorSection">
+        <div class="module-tag">Module 6.1 · Cryptography</div>
+        <div class="module-icon">🔐</div>
+        <h3 class="module-title">Shor's Factoring Algorithm</h3>
+        <p class="module-desc">Step-by-step protocol: factor large numbers in polynomial time instead of exponential time. The reason RSA encryption is currently threatened.</p>
+        <div class="module-tags"><span class="tag purple">Factoring</span><span class="tag green">Cryptography</span></div>
+        <a href="algorithms.html#shorSection" class="module-btn">Factor Numbers →</a>
       </div>
 
       <!-- Grover -->
-      <div class="module-card locked">
-        <div class="module-tag">Module 5.1 · Coming Soon</div>
+      <div class="module-card" data-href="algorithms.html#groverSection">
+        <div class="module-tag">Module 5.1 · Search Algorithm</div>
         <div class="module-icon">🔍</div>
         <h3 class="module-title">Grover's Search Algorithm</h3>
         <p class="module-desc">Amplitude amplification as a rotation in 2D subspace — from √N iterations to the target state. Geometric proof animated in real time.</p>
         <div class="module-tags"><span class="tag blue">Algorithm</span><span class="tag cyan">O(√N)</span></div>
-        <span class="module-btn locked-btn">Coming Soon</span>
+        <a href="algorithms.html#groverSection" class="module-btn">Run Search →</a>
       </div>
     </div>
   </section>
@@ -350,8 +351,12 @@ qc.measure(<span class="num">0</span>, <span class="num">0</span>)
         <p>Making quantum mechanics visceral, interactive, and accessible.</p>
         <p style="margin-top:4px;color:var(--text-muted);font-size:0.72rem;">Open source · No dependencies · Pure browser</p>
       </div>
-      <div class="footer-links">
+      <div class="footer-links" style="display:flex;flex-wrap:wrap;gap:16px;">
         <a href="index.html">Home</a>
+        <a href="playground.html">Playground</a>
+        <a href="applications.html">Applications</a>
+        <a href="algorithms.html">Algorithms</a>
+        <a href="future.html">Future Vision</a>
         <a href="surface-code.html">Surface Code</a>
         <a href="bloch-sphere.html">Bloch Sphere</a>
       </div>

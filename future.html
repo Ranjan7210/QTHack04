@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Industry & Future Vision — Quantum Computing · QuantumViz</title>
+  <meta name="description" content="IBM, Google, Rigetti — who's building quantum computers? And what happens when they go mainstream? Explore the future of quantum computing." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="index.css" />
+  <link rel="stylesheet" href="future.css" />
+  <script>(function(){var t=localStorage.getItem('qviz-theme')||'dark';document.documentElement.setAttribute('data-theme',t);})();</script>
+</head>
+<body>
+  <div class="bg-canvas"></div>
+  <div class="noise-overlay"></div>
+
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand">
+        <span class="brand-icon">⟨ψ|</span>
+        <span class="brand-text">QuantumViz</span>
+      </a>
+      <div class="nav-links">
+        <span class="nav-breadcrumb">/ Industry &amp; Future</span>
+        <a href="playground.html" class="nav-link">Playground</a>
+        <a href="algorithms.html" class="nav-link">Algorithms</a>
+        <a href="index.html" class="nav-link">Home</a>
+      </div>
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">🌙</button>
+    </div>
+  </nav>
+
+  <main class="fut-main">
+    <div class="pg-header">
+      <div class="module-badge">Industry &amp; Vision</div>
+      <h1 class="pg-title">The Quantum <span class="gradient-text">Future</span></h1>
+      <p class="pg-subtitle">From lab experiments to global impact — who's building it and what happens next.</p>
+    </div>
+
+    <!-- ═══ Industry Leaders ═══ -->
+    <section class="fut-section" id="industry">
+      <h2 class="section-title">Industry <span class="gradient-text">Leaders</span></h2>
+      <div class="industry-grid">
+
+        <div class="industry-card glass-panel">
+          <div class="ind-logo">🔵</div>
+          <h3>IBM Quantum</h3>
+          <div class="ind-stat">1,121 qubits (Condor, 2023)</div>
+          <p>Pioneer of cloud-accessible quantum computing. IBM provides Qiskit — the most popular open-source quantum SDK. Their roadmap targets 100,000 qubits by 2033 with error-corrected logical qubits.</p>
+          <div class="ind-tags">
+            <span class="tag purple">Superconducting</span>
+            <span class="tag blue">Qiskit</span>
+            <span class="tag green">Cloud Access</span>
+          </div>
+        </div>
+
+        <div class="industry-card glass-panel">
+          <div class="ind-logo">🟢</div>
+          <h3>Google Quantum AI</h3>
+          <div class="ind-stat">Quantum Supremacy (Sycamore, 2019)</div>
+          <p>First to demonstrate quantum supremacy — solving a problem in 200 seconds that would take a supercomputer 10,000 years. Now focused on building fault-tolerant quantum computers with their Willow chip.</p>
+          <div class="ind-tags">
+            <span class="tag pink">Supremacy</span>
+            <span class="tag cyan">Willow Chip</span>
+            <span class="tag amber">Error Correction</span>
+          </div>
+        </div>
+
+        <div class="industry-card glass-panel">
+          <div class="ind-logo">🟣</div>
+          <h3>Rigetti Computing</h3>
+          <div class="ind-stat">84-qubit Ankaa-2 processor</div>
+          <p>Full-stack quantum computing company building both hardware and cloud services. Their hybrid quantum-classical approach focuses on near-term practical applications in chemistry and optimization.</p>
+          <div class="ind-tags">
+            <span class="tag purple">Hybrid</span>
+            <span class="tag green">Full-Stack</span>
+          </div>
+        </div>
+
+        <div class="industry-card glass-panel">
+          <div class="ind-logo">🟡</div>
+          <h3>IonQ</h3>
+          <div class="ind-stat">Trapped Ion · #AQ 35</div>
+          <p>Uses trapped ions instead of superconducting circuits — achieving the highest gate fidelity in the industry. Available on AWS, Azure, and Google Cloud for enterprise applications.</p>
+          <div class="ind-tags">
+            <span class="tag amber">Trapped Ions</span>
+            <span class="tag blue">Multi-Cloud</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ Future Vision Timeline ═══ -->
+    <section class="fut-section" id="timeline">
+      <h2 class="section-title">What <span class="gradient-text">Happens Next?</span></h2>
+      <p class="section-subtitle">An interactive timeline of quantum computing's trajectory.</p>
+
+      <div class="timeline">
+        <div class="tl-line"></div>
+
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-year">2024–2025</div>
+          <div class="tl-content glass-panel">
+            <h4>NISQ Era: Noisy Intermediate Scale</h4>
+            <p>50–1000 qubit processors with error rates ~0.1–1%. Useful for quantum chemistry, small optimizations, and proof-of-concept demonstrations. Error correction is experimental.</p>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-year">2027–2030</div>
+          <div class="tl-content glass-panel">
+            <h4>Fault-Tolerant Threshold</h4>
+            <p>First logical qubits with error correction. Drug discovery simulations become practical. Post-quantum cryptography becomes mandatory for banking and government.</p>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-year">2030–2035</div>
+          <div class="tl-content glass-panel">
+            <h4>Quantum Advantage at Scale</h4>
+            <p>1,000+ logical qubits. Material science revolution — room-temperature superconductors designed. AI training accelerated from weeks to hours. Climate modeling breakthroughs.</p>
+          </div>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-year">2035–2040+</div>
+          <div class="tl-content glass-panel">
+            <h4>Quantum-Native Computing</h4>
+            <p>Quantum processors in data centers alongside classical systems. Fully homomorphic encryption. Quantum internet for unhackable communication. A new era of computing begins.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ "What If?" Cards ═══ -->
+    <section class="fut-section" id="whatif">
+      <h2 class="section-title">"What <span class="gradient-text">If?</span>" — Quantum Goes Mainstream</h2>
+      <p class="section-subtitle">Click each card to explore the implications.</p>
+
+      <div class="whatif-grid">
+        <div class="whatif-card glass-panel" data-expanded="false">
+          <div class="wi-header">
+            <span class="wi-icon">🔓</span>
+            <h4>Cybersecurity Apocalypse?</h4>
+            <span class="wi-toggle">+</span>
+          </div>
+          <div class="wi-body">
+            <p>Shor's algorithm can break RSA, ECC, and Diffie-Hellman — the backbone of internet security. <strong>Every encrypted message ever sent</strong> could be retroactively decrypted ("harvest now, decrypt later" attacks).</p>
+            <p><strong>The fix:</strong> Post-quantum cryptography (lattice-based, hash-based) is being standardized by NIST right now. Migration is urgent.</p>
+          </div>
+        </div>
+
+        <div class="whatif-card glass-panel" data-expanded="false">
+          <div class="wi-header">
+            <span class="wi-icon">💊</span>
+            <h4>Medicine Revolution</h4>
+            <span class="wi-toggle">+</span>
+          </div>
+          <div class="wi-body">
+            <p>Molecular simulation at quantum scale means designing drugs <strong>atom by atom</strong>. Protein folding becomes exact, not approximate. Personalized medicine based on full molecular profiles becomes feasible.</p>
+            <p><strong>Impact:</strong> Drug development time drops from 10–15 years to months. Diseases like Alzheimer's become treatable.</p>
+          </div>
+        </div>
+
+        <div class="whatif-card glass-panel" data-expanded="false">
+          <div class="wi-header">
+            <span class="wi-icon">🤖</span>
+            <h4>AI Singularity Accelerated</h4>
+            <span class="wi-toggle">+</span>
+          </div>
+          <div class="wi-body">
+            <p>Quantum machine learning can process exponentially larger feature spaces. Training that takes weeks on GPU clusters could take <strong>hours</strong> on quantum processors.</p>
+            <p><strong>Risk:</strong> AI development accelerates beyond our ability to control. Quantum-enhanced AI could design even better quantum computers, creating a feedback loop.</p>
+          </div>
+        </div>
+
+        <div class="whatif-card glass-panel" data-expanded="false">
+          <div class="wi-header">
+            <span class="wi-icon">🌍</span>
+            <h4>Global Technology Shift</h4>
+            <span class="wi-toggle">+</span>
+          </div>
+          <div class="wi-body">
+            <p>Quantum computing becomes a <strong>strategic national asset</strong>. Countries without quantum capabilities face technological dependency. New "quantum divides" emerge between nations.</p>
+            <p><strong>Opportunity:</strong> Climate change modelling becomes precise enough to predict and prevent catastrophic events. Energy grid optimization saves billions.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="brand-icon">⟨ψ|</span>
+          <span class="brand-text">QuantumViz</span>
+        </div>
+        <p>Making quantum mechanics visceral, interactive, and accessible.</p>
+      </div>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="playground.html">Playground</a>
+        <a href="applications.html">Applications</a>
+        <a href="algorithms.html">Algorithms</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="future.js"></script>
+</body>
+</html>

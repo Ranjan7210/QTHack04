@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quantum Algorithms — Grover & Shor Visualized · QuantumViz</title>
+  <meta name="description" content="Watch Grover's search and Shor's factoring algorithms animate step by step. No PhD required — just visual intuition." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="index.css" />
+  <link rel="stylesheet" href="algorithms.css" />
+  <script>(function(){var t=localStorage.getItem('qviz-theme')||'dark';document.documentElement.setAttribute('data-theme',t);})();</script>
+</head>
+<body>
+  <div class="bg-canvas"></div>
+  <div class="noise-overlay"></div>
+
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand">
+        <span class="brand-icon">⟨ψ|</span>
+        <span class="brand-text">QuantumViz</span>
+      </a>
+      <div class="nav-links">
+        <span class="nav-breadcrumb">/ Quantum Algorithms</span>
+        <a href="playground.html" class="nav-link">Playground</a>
+        <a href="applications.html" class="nav-link">Applications</a>
+        <a href="future.html" class="nav-link">Future</a>
+      </div>
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">🌙</button>
+    </div>
+  </nav>
+
+  <main class="algo-main">
+    <div class="pg-header">
+      <div class="module-badge">Simplified Algorithms</div>
+      <h1 class="pg-title">Quantum <span class="gradient-text">Algorithms</span></h1>
+      <p class="pg-subtitle">The two most important quantum algorithms — visualized step by step.</p>
+    </div>
+
+    <!-- ═══ Grover's Algorithm ═══ -->
+    <section class="algo-section glass-panel" id="groverSection">
+      <div class="algo-header">
+        <div class="algo-badge" style="background:rgba(139,92,246,0.12);color:var(--purple);">🔍 Grover's Search Algorithm</div>
+        <p class="algo-tagline">Find a needle in a haystack — <strong>quadratically faster</strong> than any classical search.</p>
+      </div>
+
+      <div class="algo-steps">
+        <div class="algo-step-card">
+          <div class="step-circle">1</div>
+          <h4>Superposition</h4>
+          <p>Put all N items into equal superposition using Hadamard gates. Each item has probability 1/N.</p>
+        </div>
+        <div class="algo-step-card">
+          <div class="step-circle">2</div>
+          <h4>Oracle</h4>
+          <p>Mark the target item by flipping its amplitude sign. The oracle "knows" the answer but only reveals it quantum-mechanically.</p>
+        </div>
+        <div class="algo-step-card">
+          <div class="step-circle">3</div>
+          <h4>Amplification</h4>
+          <p>Apply the "diffusion operator" — reflect amplitudes about the mean. The target gets boosted, others shrink.</p>
+        </div>
+        <div class="algo-step-card">
+          <div class="step-circle">4</div>
+          <h4>Repeat √N times</h4>
+          <p>After ~√N iterations, the target amplitude is nearly 1. Measure to find it with high probability.</p>
+        </div>
+      </div>
+
+      <div class="grover-viz">
+        <div class="grover-controls">
+          <div class="control-group">
+            <span class="ctrl-label">Database Size (N)</span>
+            <div class="btn-group">
+              <button class="dist-btn active" data-n="8">8</button>
+              <button class="dist-btn" data-n="16">16</button>
+              <button class="dist-btn" data-n="32">32</button>
+              <button class="dist-btn" data-n="64">64</button>
+            </div>
+          </div>
+          <div class="grover-btns">
+            <button class="action-btn primary" id="btnGroverStep">▶ Next Iteration</button>
+            <button class="action-btn secondary" id="btnGroverAuto">⏩ Auto-Run</button>
+            <button class="action-btn ghost" id="btnGroverReset">↺ Reset</button>
+          </div>
+          <div class="grover-info">
+            <span>Iteration: <strong id="groverIter">0</strong> / <strong id="groverMax">2</strong></span>
+            <span>Target: <strong id="groverTarget" style="color:var(--pink);">item #3</strong></span>
+          </div>
+        </div>
+        <canvas id="groverCanvas" width="700" height="260"></canvas>
+      </div>
+    </section>
+
+    <!-- ═══ Shor's Algorithm ═══ -->
+    <section class="algo-section glass-panel" id="shorSection">
+      <div class="algo-header">
+        <div class="algo-badge" style="background:rgba(236,72,153,0.12);color:var(--pink);">🔐 Shor's Factoring Algorithm</div>
+        <p class="algo-tagline">Factor large numbers in <strong>polynomial time</strong> — the reason RSA is threatened.</p>
+      </div>
+
+      <div class="algo-steps">
+        <div class="algo-step-card">
+          <div class="step-circle" style="background:linear-gradient(135deg,var(--pink),#be185d);">1</div>
+          <h4>Choose Random a</h4>
+          <p>Pick a random number a < N. If gcd(a, N) > 1, you already found a factor. Otherwise continue.</p>
+        </div>
+        <div class="algo-step-card">
+          <div class="step-circle" style="background:linear-gradient(135deg,var(--pink),#be185d);">2</div>
+          <h4>Find the Period r</h4>
+          <p>Use a quantum computer to find the period r of f(x) = a<sup>x</sup> mod N. This is the hard part classically; quantum does it efficiently using QFT.</p>
+        </div>
+        <div class="algo-step-card">
+          <div class="step-circle" style="background:linear-gradient(135deg,var(--pink),#be185d);">3</div>
+          <h4>Extract Factors</h4>
+          <p>If r is even, compute gcd(a<sup>r/2</sup> ± 1, N). These are likely non-trivial factors of N.</p>
+        </div>
+      </div>
+
+      <div class="shor-demo">
+        <div class="shor-input">
+          <span class="ctrl-label">Number to Factor</span>
+          <div class="btn-group">
+            <button class="dist-btn active" data-sn="15">15</button>
+            <button class="dist-btn" data-sn="21">21</button>
+            <button class="dist-btn" data-sn="35">35</button>
+            <button class="dist-btn" data-sn="77">77</button>
+            <button class="dist-btn" data-sn="91">91</button>
+          </div>
+        </div>
+        <button class="action-btn primary" id="btnShorRun">▶ Run Shor's Algorithm</button>
+        <div class="shor-flow" id="shorFlow"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="brand-icon">⟨ψ|</span>
+          <span class="brand-text">QuantumViz</span>
+        </div>
+        <p>Making quantum mechanics visceral, interactive, and accessible.</p>
+      </div>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="playground.html">Playground</a>
+        <a href="applications.html">Applications</a>
+        <a href="future.html">Future</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="algorithms.js"></script>
+</body>
+</html>

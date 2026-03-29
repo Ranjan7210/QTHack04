@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quantum Playground — Try It Yourself · QuantumViz</title>
+  <meta name="description" content="Hands-on quantum computing lab. Drag gates, collapse states, compare quantum vs classical randomness — all in your browser." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="index.css" />
+  <link rel="stylesheet" href="playground.css" />
+  <script>(function(){var t=localStorage.getItem('qviz-theme')||'dark';document.documentElement.setAttribute('data-theme',t);})();</script>
+</head>
+<body>
+  <div class="bg-canvas"></div>
+  <div class="noise-overlay"></div>
+
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand">
+        <span class="brand-icon">⟨ψ|</span>
+        <span class="brand-text">QuantumViz</span>
+      </a>
+      <div class="nav-links">
+        <span class="nav-breadcrumb">/ Quantum Playground</span>
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="applications.html" class="nav-link">Applications</a>
+        <a href="algorithms.html" class="nav-link">Algorithms</a>
+      </div>
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">🌙</button>
+    </div>
+  </nav>
+
+  <main class="pg-main">
+    <!-- Header -->
+    <div class="pg-header">
+      <div class="module-badge">Try It Yourself</div>
+      <h1 class="pg-title">Quantum <span class="gradient-text">Playground</span></h1>
+      <p class="pg-subtitle">Experiment with real quantum mechanics. No PhD required.</p>
+    </div>
+
+    <!-- ═══ Section 1: Qubit Visualizer ═══ -->
+    <section class="pg-section glass-panel" id="qubitViz">
+      <div class="pg-section-header">
+        <h2>🎯 Qubit State Explorer</h2>
+        <p>Drag the slider to change the qubit's superposition. Press <strong>Measure</strong> to collapse it.</p>
+      </div>
+      <div class="qubit-viz-layout">
+        <div class="qv-visual">
+          <div class="qv-coin" id="qvCoin">
+            <div class="coin-face coin-0">|0⟩</div>
+            <div class="coin-face coin-1">|1⟩</div>
+            <div class="coin-super">?</div>
+          </div>
+          <div class="qv-bars">
+            <div class="qv-bar-col">
+              <div class="qv-bar qv-bar-0" id="qvBar0" style="height:100%"></div>
+              <span class="qv-bar-label">|0⟩</span>
+              <span class="qv-bar-val" id="qvVal0">100%</span>
+            </div>
+            <div class="qv-bar-col">
+              <div class="qv-bar qv-bar-1" id="qvBar1" style="height:0%"></div>
+              <span class="qv-bar-label">|1⟩</span>
+              <span class="qv-bar-val" id="qvVal1">0%</span>
+            </div>
+          </div>
+        </div>
+        <div class="qv-controls">
+          <div class="qv-slider-row">
+            <span class="ctrl-label">Superposition (θ)</span>
+            <input type="range" min="0" max="180" value="0" class="qslider" id="qvTheta" />
+            <span class="slider-val" id="qvThetaVal">0°</span>
+          </div>
+          <div class="qv-state-eq" id="qvStateEq">|ψ⟩ = |0⟩</div>
+          <div class="qv-actions">
+            <button class="action-btn primary" id="btnMeasure">⚡ Measure</button>
+            <button class="action-btn ghost" id="btnResetQV">↺ Reset</button>
+          </div>
+          <div class="qv-result" id="qvResult"></div>
+          <div class="qv-stats">
+            <span class="ctrl-label">Measurement Statistics</span>
+            <div class="qv-stats-row">
+              <span>|0⟩ count: <strong id="stat0">0</strong></span>
+              <span>|1⟩ count: <strong id="stat1">0</strong></span>
+              <span>Shots: <strong id="statTotal">0</strong></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ Section 2: Gate Simulator ═══ -->
+    <section class="pg-section glass-panel" id="gateSim">
+      <div class="pg-section-header">
+        <h2>🔧 Quantum Gate Simulator</h2>
+        <p>Click gates to apply them sequentially. See how each gate transforms the quantum state.</p>
+      </div>
+      <div class="gate-sim-layout">
+        <div class="gs-circuit">
+          <span class="gs-label">Circuit</span>
+          <div class="gs-wire" id="gsWire">
+            <div class="gs-init">|0⟩</div>
+            <div class="gs-gates" id="gsGates"></div>
+            <div class="gs-output" id="gsOutput">→ |0⟩</div>
+          </div>
+        </div>
+        <div class="gs-palette">
+          <span class="ctrl-label">Add Gate</span>
+          <div class="gs-gate-btns">
+            <button class="gate-chip" data-gate="H">H</button>
+            <button class="gate-chip" data-gate="X">X</button>
+            <button class="gate-chip" data-gate="Z">Z</button>
+            <button class="gate-chip" data-gate="S">S</button>
+            <button class="gate-chip" data-gate="T">T</button>
+          </div>
+          <button class="action-btn ghost" id="btnClearCircuit" style="margin-top:8px;">Clear Circuit</button>
+        </div>
+        <div class="gs-state-panel glass-panel">
+          <span class="ctrl-label">Current State</span>
+          <div class="gs-state-display">
+            <div class="gs-ket" id="gsKet">|ψ⟩ = 1.000|0⟩ + 0.000|1⟩</div>
+            <div class="gs-prob-row">
+              <div class="gs-prob-bar">
+                <div class="gs-fill gs-fill-0" id="gsFill0" style="width:100%"></div>
+              </div>
+              <span id="gsProb0">P(0) = 100%</span>
+            </div>
+            <div class="gs-prob-row">
+              <div class="gs-prob-bar">
+                <div class="gs-fill gs-fill-1" id="gsFill1" style="width:0%"></div>
+              </div>
+              <span id="gsProb1">P(1) = 0%</span>
+            </div>
+          </div>
+          <button class="action-btn primary" id="btnGsMeasure" style="margin-top:12px;">⚡ Measure Circuit</button>
+          <div class="gs-mresult" id="gsMResult"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ Section 3: Quantum vs Classical RNG ═══ -->
+    <section class="pg-section glass-panel" id="rngCompare">
+      <div class="pg-section-header">
+        <h2>🎲 Quantum vs Classical Randomness</h2>
+        <p>Generate random numbers both ways. See the distribution difference in real time.</p>
+      </div>
+      <div class="rng-layout">
+        <div class="rng-col">
+          <h3 class="rng-title" style="color:var(--amber);">Classical (Math.random)</h3>
+          <canvas id="rngClassical" width="300" height="180"></canvas>
+          <span class="rng-count" id="rngClassCount">0 samples</span>
+        </div>
+        <div class="rng-col">
+          <h3 class="rng-title" style="color:var(--purple);">Quantum (Hadamard + Measure)</h3>
+          <canvas id="rngQuantum" width="300" height="180"></canvas>
+          <span class="rng-count" id="rngQuantCount">0 samples</span>
+        </div>
+      </div>
+      <div class="rng-actions">
+        <button class="action-btn primary" id="btnRng100">Generate 100</button>
+        <button class="action-btn secondary" id="btnRng1000">Generate 1,000</button>
+        <button class="action-btn ghost" id="btnRngReset">Reset</button>
+      </div>
+    </section>
+
+    <!-- ═══ Section 4: Entanglement Demo ═══ -->
+    <section class="pg-section glass-panel" id="entangleDemo">
+      <div class="pg-section-header">
+        <h2>🔗 Entanglement: Spooky Action</h2>
+        <p>Create an entangled pair (Bell state). Measure one qubit — the other instantly correlates.</p>
+      </div>
+      <div class="ent-layout">
+        <div class="ent-qubit ent-alice" id="entAlice">
+          <span class="ent-name">Alice's Qubit</span>
+          <div class="ent-orb" id="entOrbA">?</div>
+          <span class="ent-state" id="entStateA">Entangled</span>
+        </div>
+        <div class="ent-connection">
+          <svg viewBox="0 0 120 40" class="ent-svg" id="entSvg">
+            <line x1="0" y1="20" x2="120" y2="20" stroke="var(--purple)" stroke-width="2" stroke-dasharray="6 4" class="ent-line"/>
+            <circle cx="60" cy="20" r="4" fill="var(--purple)" class="ent-pulse"/>
+          </svg>
+          <span class="ent-label">Φ⁺ = (|00⟩ + |11⟩)/√2</span>
+        </div>
+        <div class="ent-qubit ent-bob" id="entBob">
+          <span class="ent-name">Bob's Qubit</span>
+          <div class="ent-orb" id="entOrbB">?</div>
+          <span class="ent-state" id="entStateB">Entangled</span>
+        </div>
+      </div>
+      <div class="ent-actions">
+        <button class="action-btn primary" id="btnEntMeasure">⚡ Measure Alice's Qubit</button>
+        <button class="action-btn ghost" id="btnEntReset">↺ Create New Pair</button>
+      </div>
+      <div class="ent-explainer" id="entExplainer"></div>
+    </section>
+
+    <!-- ═══ Section 5: Classical vs Quantum Comparison ═══ -->
+    <section class="pg-section glass-panel" id="comparison">
+      <div class="pg-section-header">
+        <h2>⚡ Classical vs Quantum Computing</h2>
+        <p>Toggle between paradigms to see the fundamental differences.</p>
+      </div>
+      <div class="cmp-table">
+        <div class="cmp-row cmp-header">
+          <div class="cmp-cell"></div>
+          <div class="cmp-cell cmp-classical">💻 Classical</div>
+          <div class="cmp-cell cmp-quantum">⚛️ Quantum</div>
+        </div>
+        <div class="cmp-row">
+          <div class="cmp-cell cmp-label">Basic Unit</div>
+          <div class="cmp-cell">Bit (0 or 1)</div>
+          <div class="cmp-cell cmp-highlight">Qubit (0 AND 1 simultaneously)</div>
+        </div>
+        <div class="cmp-row">
+          <div class="cmp-cell cmp-label">Processing</div>
+          <div class="cmp-cell">Sequential logic gates</div>
+          <div class="cmp-cell cmp-highlight">Quantum parallelism via superposition</div>
+        </div>
+        <div class="cmp-row">
+          <div class="cmp-cell cmp-label">Search (N items)</div>
+          <div class="cmp-cell">O(N) — check every item</div>
+          <div class="cmp-cell cmp-highlight">O(√N) — Grover's algorithm</div>
+        </div>
+        <div class="cmp-row">
+          <div class="cmp-cell cmp-label">Factoring</div>
+          <div class="cmp-cell">Exponential time (RSA is safe)</div>
+          <div class="cmp-cell cmp-highlight">Polynomial time — Shor's algorithm</div>
+        </div>
+        <div class="cmp-row">
+          <div class="cmp-cell cmp-label">Error Rate</div>
+          <div class="cmp-cell">~0% (mature tech)</div>
+          <div class="cmp-cell cmp-highlight">~0.1-1% (needs error correction)</div>
+        </div>
+        <div class="cmp-row">
+          <div class="cmp-cell cmp-label">Entanglement</div>
+          <div class="cmp-cell">❌ Not possible</div>
+          <div class="cmp-cell cmp-highlight">✓ Qubits share quantum correlations</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="brand-icon">⟨ψ|</span>
+          <span class="brand-text">QuantumViz</span>
+        </div>
+        <p>Making quantum mechanics visceral, interactive, and accessible.</p>
+      </div>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="playground.html">Playground</a>
+        <a href="applications.html">Applications</a>
+        <a href="algorithms.html">Algorithms</a>
+        <a href="future.html">Future</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="playground.js"></script>
+</body>
+</html>

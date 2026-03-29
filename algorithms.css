@@ -1,0 +1,164 @@
+/* ============================================================
+   Algorithms Page — algorithms.css
+   ============================================================ */
+
+.algo-main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 90px 28px 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.algo-section { padding: 28px; }
+
+.algo-header { margin-bottom: 20px; }
+
+.algo-badge {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 50px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.algo-tagline {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* Step Cards */
+.algo-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.algo-step-card {
+  padding: 16px;
+  background: var(--bg-glass);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+
+[data-theme="light"] .algo-step-card {
+  background: #f8faff;
+  border-color: rgba(0,0,0,0.08);
+}
+
+.step-circle {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--purple), #6d28d9);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin: 0 auto 10px;
+}
+
+.algo-step-card h4 {
+  font-size: 0.88rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.algo-step-card p {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+/* Grover Viz */
+.grover-viz {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.grover-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-end;
+}
+
+.grover-btns { display: flex; gap: 8px; }
+
+.grover-info {
+  display: flex;
+  gap: 20px;
+  font-size: 0.82rem;
+  font-family: var(--font-mono);
+  color: var(--text-secondary);
+  align-items: center;
+}
+
+#groverCanvas {
+  width: 100%;
+  max-width: 700px;
+  height: 260px;
+  background: rgba(0,0,0,0.15);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+}
+
+[data-theme="light"] #groverCanvas {
+  background: #f8faff;
+  border-color: rgba(0,0,0,0.1);
+}
+
+/* Shor Demo */
+.shor-demo {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.shor-input {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.shor-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 40px;
+}
+
+.shor-step {
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  animation: shor-appear 0.4s ease;
+}
+
+@keyframes shor-appear {
+  from { opacity: 0; transform: translateX(-12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.shor-step.info { background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.2); color: var(--text-primary); }
+.shor-step.quantum { background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.2); color: var(--text-primary); }
+.shor-step.success { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2); color: var(--green); font-weight: 700; }
+
+/* Responsive */
+@media (max-width: 800px) {
+  .algo-steps { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+  .algo-main { padding: 80px 16px 40px; }
+  .algo-steps { grid-template-columns: 1fr; }
+}

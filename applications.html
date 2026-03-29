@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Real-World Applications — Quantum Advantage · QuantumViz</title>
+  <meta name="description" content="Discover how quantum computing solves drug discovery, cryptography, and optimization problems. Race classical vs quantum approaches in our Problem Solver." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="index.css" />
+  <link rel="stylesheet" href="applications.css" />
+  <script>(function(){var t=localStorage.getItem('qviz-theme')||'dark';document.documentElement.setAttribute('data-theme',t);})();</script>
+</head>
+<body>
+  <div class="bg-canvas"></div>
+  <div class="noise-overlay"></div>
+
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand">
+        <span class="brand-icon">⟨ψ|</span>
+        <span class="brand-text">QuantumViz</span>
+      </a>
+      <div class="nav-links">
+        <span class="nav-breadcrumb">/ Real-World Applications</span>
+        <a href="playground.html" class="nav-link">Playground</a>
+        <a href="algorithms.html" class="nav-link">Algorithms</a>
+        <a href="index.html" class="nav-link">Home</a>
+      </div>
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">🌙</button>
+    </div>
+  </nav>
+
+  <main class="app-main">
+    <div class="pg-header">
+      <div class="module-badge">Quantum Advantage</div>
+      <h1 class="pg-title">Real-World <span class="gradient-text">Applications</span></h1>
+      <p class="pg-subtitle">Quantum computing isn't theory — it's already reshaping industries.</p>
+    </div>
+
+    <!-- ═══ Application Cards ═══ -->
+    <section class="app-cards-section">
+      <div class="app-cards-grid">
+        <!-- Drug Discovery -->
+        <div class="app-card">
+          <div class="app-icon">💊</div>
+          <h3>Drug Discovery</h3>
+          <div class="app-flow">
+            <div class="flow-step flow-problem">
+              <span class="flow-label">Problem</span>
+              <p>Simulating molecular interactions to find new drugs requires modeling up to 10<sup>80</sup> quantum states.</p>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step flow-classical">
+              <span class="flow-label">Classical Limit</span>
+              <p>Even supercomputers take <strong>years</strong> to approximate a single protein fold.</p>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step flow-quantum">
+              <span class="flow-label">Quantum Advantage</span>
+              <p>Quantum computers <strong>natively simulate</strong> molecular wavefunctions — exponential speedup.</p>
+            </div>
+          </div>
+          <div class="app-tags">
+            <span class="tag green">Healthcare</span>
+            <span class="tag purple">VQE Algorithm</span>
+          </div>
+        </div>
+
+        <!-- Cryptography -->
+        <div class="app-card">
+          <div class="app-icon">🔐</div>
+          <h3>Cryptography & Breaking RSA</h3>
+          <div class="app-flow">
+            <div class="flow-step flow-problem">
+              <span class="flow-label">Problem</span>
+              <p>RSA encryption relies on the difficulty of factoring large numbers (2048-bit).</p>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step flow-classical">
+              <span class="flow-label">Classical Limit</span>
+              <p>Best algorithms take ~10<sup>30</sup> years for RSA-2048. Essentially impossible.</p>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step flow-quantum">
+              <span class="flow-label">Quantum Threat</span>
+              <p>Shor's algorithm factors in <strong>polynomial time</strong>. Post-quantum crypto is now urgent.</p>
+            </div>
+          </div>
+          <div class="app-tags">
+            <span class="tag pink">Cybersecurity</span>
+            <span class="tag blue">Shor's Algorithm</span>
+          </div>
+        </div>
+
+        <!-- Optimization -->
+        <div class="app-card">
+          <div class="app-icon">🚛</div>
+          <h3>Optimization (Logistics & Supply Chain)</h3>
+          <div class="app-flow">
+            <div class="flow-step flow-problem">
+              <span class="flow-label">Problem</span>
+              <p>Route optimization for N cities = N! possibilities. 20 cities → 2.4 quintillion routes.</p>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step flow-classical">
+              <span class="flow-label">Classical Limit</span>
+              <p>Heuristics give "good enough" but never guaranteed-optimal solutions at scale.</p>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step flow-quantum">
+              <span class="flow-label">Quantum Advantage</span>
+              <p>QAOA + quantum annealing explore solution space <strong>in superposition</strong> — near-optimal at scale.</p>
+            </div>
+          </div>
+          <div class="app-tags">
+            <span class="tag amber">Logistics</span>
+            <span class="tag cyan">QAOA</span>
+          </div>
+        </div>
+
+        <!-- AI -->
+        <div class="app-card">
+          <div class="app-icon">🧠</div>
+          <h3>AI & Machine Learning</h3>
+          <div class="app-flow">
+            <div class="flow-step flow-problem">
+              <span class="flow-label">Problem</span>
+              <p>Training large models requires millions of GPU hours. Data dimension explodes with features.</p>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step flow-classical">
+              <span class="flow-label">Classical Limit</span>
+              <p>Gradient descent on high-dimensional surfaces is slow and energy-hungry.</p>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step flow-quantum">
+              <span class="flow-label">Quantum Advantage</span>
+              <p>Quantum kernel methods & QNNs process exponential feature spaces <strong>naturally</strong>.</p>
+            </div>
+          </div>
+          <div class="app-tags">
+            <span class="tag purple">QML</span>
+            <span class="tag green">Feature Spaces</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ Problem Solver (UNIQUE FEATURE) ═══ -->
+    <section class="solver-section glass-panel" id="solver">
+      <div class="pg-section-header">
+        <h2>🏎️ Problem Solver — Classical vs Quantum Race</h2>
+        <p>Choose a problem, then watch a classical computer and quantum computer solve it side by side.</p>
+      </div>
+
+      <div class="solver-picker">
+        <button class="solver-choice active" data-problem="search" id="solverSearch">
+          <span class="sc-icon">🔍</span>
+          <span class="sc-name">Database Search</span>
+          <span class="sc-algo">Grover's Algorithm</span>
+        </button>
+        <button class="solver-choice" data-problem="factor" id="solverFactor">
+          <span class="sc-icon">🔐</span>
+          <span class="sc-name">Factor a Number</span>
+          <span class="sc-algo">Shor's Algorithm</span>
+        </button>
+        <button class="solver-choice" data-problem="route" id="solverRoute">
+          <span class="sc-icon">🗺️</span>
+          <span class="sc-name">Route Optimization</span>
+          <span class="sc-algo">QAOA</span>
+        </button>
+      </div>
+
+      <div class="solver-arena">
+        <div class="race-lane race-classical">
+          <span class="race-label">💻 Classical</span>
+          <div class="race-bar-track">
+            <div class="race-bar-fill" id="raceClassical" style="width:0%"></div>
+          </div>
+          <span class="race-steps" id="raceClassSteps">0 steps</span>
+        </div>
+        <div class="race-lane race-quantum">
+          <span class="race-label">⚛️ Quantum</span>
+          <div class="race-bar-track">
+            <div class="race-bar-fill quantum-fill" id="raceQuantum" style="width:0%"></div>
+          </div>
+          <span class="race-steps" id="raceQuantSteps">0 steps</span>
+        </div>
+      </div>
+
+      <div class="solver-info" id="solverInfo">
+        <p class="solver-title" id="solverTitle">Database Search (N = 1,000,000)</p>
+        <p class="solver-detail" id="solverDetail">Classical: Check every record one by one → O(N) = 1,000,000 steps.<br/>Quantum: Grover's algorithm → O(√N) = 1,000 steps. <strong>1000× faster.</strong></p>
+      </div>
+
+      <div class="solver-actions">
+        <button class="action-btn primary" id="btnRace">▶ Start Race</button>
+        <button class="action-btn ghost" id="btnRaceReset">↺ Reset</button>
+      </div>
+
+      <div class="solver-result" id="solverResult"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="brand-icon">⟨ψ|</span>
+          <span class="brand-text">QuantumViz</span>
+        </div>
+        <p>Making quantum mechanics visceral, interactive, and accessible.</p>
+      </div>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="playground.html">Playground</a>
+        <a href="algorithms.html">Algorithms</a>
+        <a href="future.html">Future</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="applications.js"></script>
+</body>
+</html>

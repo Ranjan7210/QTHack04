@@ -439,6 +439,209 @@ a { text-decoration: none; color: inherit; }
 .action-btn.ghost { background: transparent; color: var(--text-secondary); border-color: var(--border-glass); }
 .action-btn.ghost:hover { color: var(--text-primary); border-color: rgba(255,255,255,0.25); transform: translateY(-2px); }
 
+/* ═══ Shared UI Components ═══
+   Used across surface-code, bloch-sphere, playground, etc.
+   Kept in index.css so every page inherits them.
+*/
+
+/* ── Layer Toggle (Knowledge Layer selector) ── */
+.layer-toggle-group {
+  display: flex;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid var(--border-glass);
+  border-radius: 50px;
+  padding: 3px;
+  gap: 2px;
+}
+
+.layer-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  padding: 7px 14px;
+  border-radius: 50px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+
+.layer-btn.active {
+  background: linear-gradient(135deg, var(--purple), #6d28d9);
+  color: white;
+  box-shadow: 0 0 14px rgba(139,92,246,0.4);
+}
+
+.layer-btn:hover:not(.active) {
+  color: var(--text-primary);
+  background: rgba(255,255,255,0.04);
+}
+
+/* ── Control Groups & Labels ── */
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 140px;
+}
+
+.ctrl-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* ── Sliders ── */
+.slider-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.qslider {
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(255,255,255,0.1);
+  outline: none;
+  cursor: pointer;
+}
+
+.qslider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--purple);
+  box-shadow: 0 0 8px rgba(139,92,246,0.5);
+  cursor: pointer;
+}
+
+.qslider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--purple);
+  box-shadow: 0 0 8px rgba(139,92,246,0.5);
+  border: none;
+  cursor: pointer;
+}
+
+.slider-val {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--purple);
+  min-width: 36px;
+  text-align: right;
+}
+
+/* ── Button Groups ── */
+.btn-group {
+  display: flex;
+  gap: 4px;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid var(--border-glass);
+  border-radius: 8px;
+  padding: 3px;
+}
+
+.dist-btn, .etype-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.dist-btn.active, .etype-btn.active {
+  background: rgba(139,92,246,0.2);
+  color: var(--purple);
+  border: 1px solid rgba(139,92,246,0.3);
+}
+
+.dist-btn:hover:not(.active), .etype-btn:hover:not(.active) {
+  color: var(--text-secondary);
+  background: rgba(255,255,255,0.04);
+}
+
+/* ── Module Badge ── */
+.module-badge {
+  display: inline-block;
+  background: rgba(139,92,246,0.15);
+  border: 1px solid rgba(139,92,246,0.3);
+  color: var(--purple);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 50px;
+  margin-bottom: 6px;
+}
+
+/* ── Nav Breadcrumb ── */
+.nav-breadcrumb {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+}
+
+/* ── Light Mode: Shared Components ── */
+[data-theme="light"] .layer-toggle-group {
+  background: rgba(0,0,0,0.06);
+  border-color: rgba(0,0,0,0.1);
+}
+
+[data-theme="light"] .layer-btn {
+  color: #64748b;
+}
+
+[data-theme="light"] .layer-btn:hover:not(.active) {
+  color: #0f172a;
+  background: rgba(0,0,0,0.05);
+}
+
+[data-theme="light"] .qslider {
+  background: rgba(0,0,0,0.12);
+}
+
+[data-theme="light"] .btn-group {
+  background: rgba(0,0,0,0.05);
+  border-color: rgba(0,0,0,0.1);
+}
+
+[data-theme="light"] .dist-btn,
+[data-theme="light"] .etype-btn {
+  color: #475569;
+}
+
+[data-theme="light"] .dist-btn.active,
+[data-theme="light"] .etype-btn.active {
+  background: rgba(109,40,217,0.12);
+  color: #6d28d9;
+  border-color: rgba(109,40,217,0.25);
+}
+
+[data-theme="light"] .dist-btn:hover:not(.active),
+[data-theme="light"] .etype-btn:hover:not(.active) {
+  color: #0f172a;
+  background: rgba(0,0,0,0.05);
+}
+
 .hero-stats {
   display: flex;
   align-items: center;

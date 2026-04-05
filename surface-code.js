@@ -44,6 +44,7 @@ const State = {
   braidPaths: [],
   dragAnyon: null,
   braidOp: 'X',
+  braidAnimating: false,
   logicalXFlipped: false,
   logicalZFlipped: false,
   // Threshold chart
@@ -555,7 +556,7 @@ function renderBraiding() {
     }
   }
 
-  // Draw braid paths
+  // Draw braid paths (completed)
   State.braidPaths.forEach(path => {
     if (path.length < 2) return;
     bCtx.beginPath();
@@ -571,6 +572,23 @@ function renderBraiding() {
     bCtx.setLineDash([4, 3]);
     bCtx.stroke();
     bCtx.setLineDash([]);
+  });
+
+  // Draw active anyon paths (in-progress drag or animation)
+  State.anyons.forEach(a => {
+    if (!a.path || a.path.length < 2) return;
+    bCtx.beginPath();
+    const start = toBraidCanvas(a.path[0].r, a.path[0].c);
+    bCtx.moveTo(start.x, start.y);
+    a.path.slice(1).forEach(pt => {
+      const p = toBraidCanvas(pt.r, pt.c);
+      bCtx.lineTo(p.x, p.y);
+    });
+    bCtx.strokeStyle = a.type === 'e'
+      ? 'rgba(239,68,68,0.8)' : 'rgba(59,130,246,0.8)';
+    bCtx.lineWidth   = 3;
+    bCtx.setLineDash([]);
+    bCtx.stroke();
   });
 
   // Draw anyons
@@ -671,6 +689,10 @@ function checkLogicalBraiding() {
     if (a.type === 'm' && maxR - minR >= d - 1) State.logicalXFlipped = !State.logicalXFlipped;
   });
 
+  updateLogicalIndicators();
+}
+
+function updateLogicalIndicators() {
   const liX = document.getElementById('liX');
   const liZ = document.getElementById('liZ');
   if (liX) {
@@ -686,6 +708,90 @@ function checkLogicalBraiding() {
   if (bs && (State.logicalXFlipped || State.logicalZFlipped)) {
     bs.textContent = '🎉 Logical operation applied! The anyon path crossed the lattice boundary.';
   }
+}
+
+// ─── Logical Operation Demonstrations ────────────────────────
+// Animate an anyon crossing the full lattice to perform a logical op
+
+function applyLogicalX() {
+  if (State.braidAnimating) return;
+  const d  = State.d;
+  const bs = document.getElementById('braidStatus');
+
+  // Ensure anyons exist
+  if (State.anyons.length === 0) spawnAnyons();
+
+  // Find an m-type anyon (X errors → Logical X̄ via vertical path)
+  const mAnyon = State.anyons.find(a => a.type === 'm');
+  if (!mAnyon) return;
+
+  // Build the path: sweep top to bottom in current column
+  const steps = [];
+  for (let r = 0; r < d; r++) {
+    steps.push({ r, c: mAnyon.c });
+  }
+
+  if (bs) bs.textContent = '⏳ Applying Logical X̄ — m-type anyon crossing lattice vertically…';
+  State.braidAnimating = true;
+  animateAnyonPath(mAnyon, steps, () => {
+    State.logicalXFlipped = !State.logicalXFlipped;
+    updateLogicalIndicators();
+    State.braidAnimating = false;
+    if (bs) bs.textContent = '🎉 Logical X̄ applied! The m-type anyon crossed all rows.';
+  });
+}
+
+function applyLogicalZ() {
+  if (State.braidAnimating) return;
+  const d  = State.d;
+  const bs = document.getElementById('braidStatus');
+
+  if (State.anyons.length === 0) spawnAnyons();
+
+  // Find an e-type anyon (Z errors → Logical Z̄ via horizontal path)
+  const eAnyon = State.anyons.find(a => a.type === 'e');
+  if (!eAnyon) return;
+
+  // Build the path: sweep left to right in current row
+  const steps = [];
+  for (let c = 0; c < d; c++) {
+    steps.push({ r: eAnyon.r, c });
+  }
+
+  if (bs) bs.textContent = '⏳ Applying Logical Z̄ — e-type anyon crossing lattice horizontally…';
+  State.braidAnimating = true;
+  animateAnyonPath(eAnyon, steps, () => {
+    State.logicalZFlipped = !State.logicalZFlipped;
+    updateLogicalIndicators();
+    State.braidAnimating = false;
+    if (bs) bs.textContent = '🎉 Logical Z̄ applied! The e-type anyon crossed all columns.';
+  });
+}
+
+function animateAnyonPath(anyon, steps, onComplete) {
+  let i = 0;
+  const pathRecord = [];
+
+  function tick() {
+    if (i >= steps.length) {
+      // Store completed path as a trail
+      const trail = pathRecord.slice();
+      trail.type  = anyon.type;
+      State.braidPaths.push(trail);
+      anyon.path = [{ r: anyon.r, c: anyon.c }];
+      renderBraiding();
+      if (onComplete) onComplete();
+      return;
+    }
+    anyon.r = steps[i].r;
+    anyon.c = steps[i].c;
+    pathRecord.push({ r: steps[i].r, c: steps[i].c });
+    anyon.path = pathRecord.slice();
+    renderBraiding();
+    i++;
+    requestAnimationFrame(() => setTimeout(tick, 80));
+  }
+  tick();
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -1001,11 +1107,37 @@ function wireEvents() {
     renderBraiding();
   });
 
-  document.getElementById('braidOpX')?.addEventListener('click', () => { State.braidOp = 'X'; });
-  document.getElementById('braidOpZ')?.addEventListener('click', () => { State.braidOp = 'Z'; });
+  // Operation buttons — Logical X̄, Logical Z̄, Clear Paths
+  const braidBtns = [document.getElementById('braidOpX'),
+                     document.getElementById('braidOpZ'),
+                     document.getElementById('braidOpReset')];
+
+  function setActiveBraidOp(activeBtn) {
+    braidBtns.forEach(b => { if (b) b.classList.remove('active'); });
+    if (activeBtn) activeBtn.classList.add('active');
+  }
+
+  document.getElementById('braidOpX')?.addEventListener('click', () => {
+    setActiveBraidOp(document.getElementById('braidOpX'));
+    State.braidOp = 'X';
+    applyLogicalX();
+  });
+  document.getElementById('braidOpZ')?.addEventListener('click', () => {
+    setActiveBraidOp(document.getElementById('braidOpZ'));
+    State.braidOp = 'Z';
+    applyLogicalZ();
+  });
   document.getElementById('braidOpReset')?.addEventListener('click', () => {
+    setActiveBraidOp(document.getElementById('braidOpReset'));
     State.braidPaths = [];
+    State.logicalXFlipped = false;
+    State.logicalZFlipped = false;
+    updateLogicalIndicators();
+    const bs = document.getElementById('braidStatus');
+    if (bs) bs.textContent = 'Paths cleared. Drag anyons or click Logical X̄ / Z̄ to apply operations.';
     renderBraiding();
+    // Return highlight to X after a moment
+    setTimeout(() => setActiveBraidOp(document.getElementById('braidOpX')), 600);
   });
 
   // Threshold

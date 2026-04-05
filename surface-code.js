@@ -454,12 +454,31 @@ function initBraidingCanvas() {
   braidCanvas = document.getElementById('braidingCanvas');
   if (!braidCanvas) return;
   bCtx = braidCanvas.getContext('2d');
-  resizeBraidingCanvas();
-  window.addEventListener('resize', resizeBraidingCanvas);
+  // Don't resize here — canvas is hidden (display:none) at load, so
+  // clientWidth/clientHeight are 0.  We resize lazily when the tab is shown.
+  window.addEventListener('resize', () => {
+    if (State.activeTab === 'braiding') resizeBraidingCanvas();
+  });
 
   braidCanvas.addEventListener('mousedown', onBraidMouseDown);
   braidCanvas.addEventListener('mousemove', onBraidMouseMove);
   braidCanvas.addEventListener('mouseup',   onBraidMouseUp);
+
+  // Touch support for mobile
+  braidCanvas.addEventListener('touchstart', e => {
+    e.preventDefault();
+    const t = e.touches[0];
+    onBraidMouseDown({ clientX: t.clientX, clientY: t.clientY });
+  }, { passive: false });
+  braidCanvas.addEventListener('touchmove', e => {
+    e.preventDefault();
+    const t = e.touches[0];
+    onBraidMouseMove({ clientX: t.clientX, clientY: t.clientY });
+  }, { passive: false });
+  braidCanvas.addEventListener('touchend', e => {
+    e.preventDefault();
+    onBraidMouseUp();
+  }, { passive: false });
 }
 
 function resizeBraidingCanvas() {
@@ -480,17 +499,22 @@ function spawnAnyons() {
 
   const d = State.d;
   // Spawn 2 e-type (red, from Z errors) and 2 m-type (blue, from X errors)
+  // Use integer positions so anyons sit on clearly visible lattice vertices
+  const half = Math.floor(d / 2);
   const positions = [
-    { r: 0.5, c: 0.5, type: 'e' },
-    { r: d - 1.5, c: d - 1.5, type: 'e' },
-    { r: 0.5, c: d - 1.5, type: 'm' },
-    { r: d - 1.5, c: 0.5, type: 'm' },
+    { r: 0,     c: 0,     type: 'e' },
+    { r: d - 1, c: d - 1, type: 'e' },
+    { r: 0,     c: d - 1, type: 'm' },
+    { r: d - 1, c: 0,     type: 'm' },
   ];
   State.anyons = positions.map((a, i) => ({
     ...a, id: i,
     path: [{ r: a.r, c: a.c }],
     dragging: false,
   }));
+
+  // Ensure canvas is properly sized (it may have been hidden when initialized)
+  resizeBraidingCanvas();
 
   document.getElementById('braidStatus').textContent =
     'Drag anyons along the lattice. Wrapping around creates logical operations.';
@@ -622,7 +646,10 @@ function onBraidMouseMove(e) {
 
 function onBraidMouseUp() {
   if (State.dragAnyon) {
-    State.braidPaths.push({ ...State.dragAnyon.path.slice(), type: State.dragAnyon.type });
+    // Store the completed path as a proper array with a type property
+    const completedPath = State.dragAnyon.path.slice();
+    completedPath.type = State.dragAnyon.type;
+    State.braidPaths.push(completedPath);
     State.dragAnyon.dragging = false;
     State.dragAnyon.path     = [{ r: State.dragAnyon.r, c: State.dragAnyon.c }];
     State.dragAnyon = null;
@@ -903,7 +930,14 @@ function wireEvents() {
       State.activeTab = tab.dataset.tab;
       document.getElementById(`tabContent${capitalize(tab.dataset.tab)}`).classList.add('active');
 
-      if (tab.dataset.tab === 'braiding' && State.anyons.length === 0) spawnAnyons();
+      if (tab.dataset.tab === 'braiding') {
+        // Canvas must be resized after the tab is visible (display changes from none to flex)
+        // Use requestAnimationFrame to ensure layout has been computed
+        requestAnimationFrame(() => {
+          resizeBraidingCanvas();
+          if (State.anyons.length === 0) spawnAnyons();
+        });
+      }
       if (tab.dataset.tab === 'threshold') initThresholdChart();
     });
   });
